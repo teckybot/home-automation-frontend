@@ -7,7 +7,6 @@ export default function DeviceCard({ device, onRefresh }) {
   const [name, setName] = useState(device.name);
   const [editing, setEditing] = useState(false);
   const [switchState, setSwitchState] = useState(device.switch);
-  const [type, setType] = useState(device.type);
   const [loadingSwitch, setLoadingSwitch] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
 
@@ -56,19 +55,6 @@ export default function DeviceCard({ device, onRefresh }) {
     }
   };
 
-  const handleTypeChange = async (newType) => {
-    setType(newType);
-    if (newType !== device.type) {
-      try {
-        await updateDevice(device._id, { type: newType });
-        message.success(`Type updated to ${newType}`);
-        onRefresh(true);
-      } catch {
-        message.error("Failed to update type (server offline?)");
-        setType(device.type);
-      }
-    }
-  };
 
   return (
     <div className="p-4 border rounded-xl shadow-md flex flex-col items-center gap-3 bg-white w-64 hover:shadow-lg transition-shadow duration-300">
@@ -89,10 +75,6 @@ export default function DeviceCard({ device, onRefresh }) {
         </h3>
       )}
 
-      <Select value={type} onChange={handleTypeChange} className="w-full">
-        <Select.Option value="fan">Fan</Select.Option>
-        <Select.Option value="light">Light</Select.Option>
-      </Select>
 
       {/* Online/Offline Badge (read-only) */}
       <div>

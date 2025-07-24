@@ -10,10 +10,11 @@ export const fetchDevices = async () => {
 };
 
 // Create a new device
-export const createDevice = async (name, type = "fan") => {
-  const res = await axios.post(API, { name, type });
+export const createDevice = async (name) => {
+  const res = await axios.post(API, { name });
   return res.data;
 };
+
 
 // Toggle switch (ON/OFF) by name
 export const updateSwitch = async (name, switchState) => {

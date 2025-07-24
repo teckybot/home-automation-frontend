@@ -120,29 +120,6 @@ export default function Dashboard() {
                 ),
         },
         {
-            title: "Type",
-            dataIndex: "type",
-            key: "type",
-            render: (type, record) => (
-                <Select
-                    value={type}
-                    onChange={async (newType) => {
-                        try {
-                            await updateDevice(record._id, { type: newType });
-                            message.success(`Type updated to ${newType}`);
-                            loadDevices(true);
-                        } catch {
-                            message.error("Failed to update type");
-                        }
-                    }}
-                    style={{ width: 100 }}
-                >
-                    <Select.Option value="fan">Fan</Select.Option>
-                    <Select.Option value="light">Light</Select.Option>
-                </Select>
-            ),
-        },
-        {
             title: "Device Status",
             dataIndex: "deviceStatus",
             key: "deviceStatus",
@@ -181,7 +158,6 @@ export default function Dashboard() {
                 <Button
                     type={state ? "primary" : "default"}
                     onClick={() => handleToggleSwitch(record)}
-                    disabled={!record.deviceStatus}
                 >
                     {state ? "ON" : "OFF"}
                 </Button>
@@ -201,7 +177,7 @@ export default function Dashboard() {
     return (
         <div className="p-6 min-h-screen bg-gray-50">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Device Dashboard</h1>
+                <h1 className="text-3xl font-bold text-blue-600">IOT Connect: <span className="text-gray-700">Control Your World</span></h1>
                 <div className="flex gap-4">
                     <Select value={filter} onChange={setFilter} style={{ width: 160 }}>
                         <Select.Option value="all">All Devices</Select.Option>
