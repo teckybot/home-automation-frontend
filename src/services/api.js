@@ -10,8 +10,8 @@ export const fetchDevices = async () => {
 };
 
 // Create a new device
-export const createDevice = async (name) => {
-  const res = await axios.post(API, { name });
+export const createDevice = async ({ name, mode }) => {
+  const res = await axios.post(API, { name, mode });
   return res.data;
 };
 

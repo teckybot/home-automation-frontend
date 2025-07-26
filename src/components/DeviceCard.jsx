@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { updateSwitch, deleteDevice, updateDevice } from "../services/api";
-import { Button, Select, Input, message, Tooltip } from "antd";
+import { Button, Input, message, Tooltip } from "antd";
 import dayjs from "dayjs";
 
 export default function DeviceCard({ device, onRefresh }) {
@@ -16,9 +16,7 @@ export default function DeviceCard({ device, onRefresh }) {
     try {
       await updateSwitch(name, newSwitchState);
       setSwitchState(newSwitchState);
-      message.success(
-        `${name} turned ${newSwitchState ? "ON" : "OFF"}`
-      );  // <-- Show status message
+      message.success(`${name} turned ${newSwitchState ? "ON" : "OFF"}`);
       onRefresh(true);
     } catch {
       message.error("Failed to toggle device (server offline?)");
@@ -26,7 +24,6 @@ export default function DeviceCard({ device, onRefresh }) {
       setLoadingSwitch(false);
     }
   };
-
 
   const handleDelete = async () => {
     setLoadingDelete(true);
@@ -55,7 +52,6 @@ export default function DeviceCard({ device, onRefresh }) {
     }
   };
 
-
   return (
     <div className="p-4 border rounded-xl shadow-md flex flex-col items-center gap-3 bg-white w-64 hover:shadow-lg transition-shadow duration-300">
       {editing ? (
@@ -75,8 +71,12 @@ export default function DeviceCard({ device, onRefresh }) {
         </h3>
       )}
 
+      {/* Show Mode (Controller / Monitoring) */}
+      <p className="text-gray-500 text-sm">
+        {device.mode === "controller" ? "Controller" : "Monitoring"}
+      </p>
 
-      {/* Online/Offline Badge (read-only) */}
+      {/* Online/Offline Badge */}
       <div>
         {device.deviceStatus ? (
           <span className="px-2 py-1 rounded text-white text-sm bg-green-500">
@@ -97,16 +97,21 @@ export default function DeviceCard({ device, onRefresh }) {
         )}
       </div>
 
-      {/* ON/OFF Switch */}
-      <Button
-        type={switchState ? "primary" : "default"}
-        loading={loadingSwitch}
-        onClick={toggleSwitch}
-        className="w-full"
-        disabled={!device.deviceStatus} // Can't toggle if device offline
-      >
-        {switchState ? "ON" : "OFF"}
-      </Button>
+      {/* Controller vs Monitoring Display */}
+      {device.mode === "controller" ? (
+        <Button
+          type={switchState ? "primary" : "default"}
+          loading={loadingSwitch}
+          onClick={toggleSwitch}
+          className="w-full"
+        >
+          {switchState ? "ON" : "OFF"}
+        </Button>
+      ) : (
+        <div className="w-full text-center py-2 border rounded bg-gray-100 font-medium">
+          Sensor Value: {device.sensorValue ?? "N/A"}
+        </div>
+      )}
 
       <Button
         danger
